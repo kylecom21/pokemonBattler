@@ -7,6 +7,7 @@ const {
     Rattata,
 } = require("../PokemonSpecies.js");
 const Pokeball = require("../Pokeball.js");
+const Trainer = require("../Trainer.js");
 
 describe("Pokemon", () => {
     test("should return an instance of pokemon", () => {
@@ -198,6 +199,159 @@ describe("Pokeball", () => {
             testPokeball.throw();
 
             expect(testPokeball.storage).toEqual({});
+        });
+    });
+});
+
+describe("Trainer", () => {
+    describe("Properties", () => {
+        test("A trainer should be an instance of Trainer", () => {
+            const kyle = new Trainer();
+            expect(kyle instanceof Trainer).toBe(true);
+        });
+        test("Trainer should instanciate a belt property with 6 Pokeballs", () => {
+            const kyle = new Trainer();
+            expect(kyle.belt).toEqual([
+                new Pokeball(),
+                new Pokeball(),
+                new Pokeball(),
+                new Pokeball(),
+                new Pokeball(),
+                new Pokeball(),
+            ]);
+        });
+    });
+    describe("Methods", () => {
+        test("catch - using catch on a new trainer should store a pokemon in the belt", () => {
+            const kyle = new Trainer();
+            const bulbasaur = new Bulbasaur();
+
+            kyle.catch(bulbasaur);
+
+            expect(kyle.belt).toEqual([
+                {
+                    storage: {
+                        name: "Bulbasaur",
+                        hitPoints: 45,
+                        attackDamage: 16,
+                        move: "vine whip",
+                        type: "grass",
+                    },
+                },
+                new Pokeball(),
+                new Pokeball(),
+                new Pokeball(),
+                new Pokeball(),
+                new Pokeball(),
+            ]);
+        });
+        test("catch - using catch multiple times stores each pokemon in different pokeballs", () => {
+            const kyle = new Trainer();
+            const bulbasaur1 = new Bulbasaur();
+            const bulbasaur2 = new Bulbasaur();
+            const bulbasaur3 = new Bulbasaur();
+            const bulbasaur4 = new Bulbasaur();
+            const bulbasaur5 = new Bulbasaur();
+            const charmander = new Charmander();
+
+            kyle.catch(bulbasaur1);
+            kyle.catch(bulbasaur2);
+            kyle.catch(bulbasaur3);
+            kyle.catch(bulbasaur4);
+            kyle.catch(bulbasaur5);
+            kyle.catch(charmander);
+
+            expect(kyle.belt).toEqual([
+                {
+                    storage: {
+                        name: "Bulbasaur",
+                        hitPoints: 45,
+                        attackDamage: 16,
+                        move: "vine whip",
+                        type: "grass",
+                    },
+                },
+                {
+                    storage: {
+                        name: "Bulbasaur",
+                        hitPoints: 45,
+                        attackDamage: 16,
+                        move: "vine whip",
+                        type: "grass",
+                    },
+                },
+                {
+                    storage: {
+                        name: "Bulbasaur",
+                        hitPoints: 45,
+                        attackDamage: 16,
+                        move: "vine whip",
+                        type: "grass",
+                    },
+                },
+                {
+                    storage: {
+                        name: "Bulbasaur",
+                        hitPoints: 45,
+                        attackDamage: 16,
+                        move: "vine whip",
+                        type: "grass",
+                    },
+                },
+                {
+                    storage: {
+                        name: "Bulbasaur",
+                        hitPoints: 45,
+                        attackDamage: 16,
+                        move: "vine whip",
+                        type: "grass",
+                    },
+                },
+                {
+                    storage: {
+                        name: "Charmander",
+                        hitPoints: 44,
+                        attackDamage: 17,
+                        move: "ember",
+                        type: "fire",
+                    },
+                },
+            ]);
+        });
+        test("catch - using catch when belt is full should return 'All pokeballs full'", () => {
+            const kyle = new Trainer();
+            const bulbasaur1 = new Bulbasaur();
+            const bulbasaur2 = new Bulbasaur();
+            const bulbasaur3 = new Bulbasaur();
+            const bulbasaur4 = new Bulbasaur();
+            const bulbasaur5 = new Bulbasaur();
+            const charmander = new Charmander();
+            const squirtle = new Squirtle();
+
+            kyle.catch(bulbasaur1);
+            kyle.catch(bulbasaur2);
+            kyle.catch(bulbasaur3);
+            kyle.catch(bulbasaur4);
+            kyle.catch(bulbasaur5);
+            kyle.catch(charmander);
+
+            expect(kyle.catch(squirtle)).toBe("All pokeballs full");
+        });
+        test("getPokemon - Returns the pokemon if it exists in the belt", () => {
+            const kyle = new Trainer();
+            const bulbasaur = new Bulbasaur();
+            kyle.catch(bulbasaur);
+
+            expect(kyle.getPokemon("Bulbasaur")).toEqual(bulbasaur);
+        });
+        test("getPokemon - Returns 'You do not have that pokemon' if use doesn't have that pokemon in their belt", () => {
+            const kyle = new Trainer();
+            const bulbasaur = new Bulbasaur();
+            kyle.catch(bulbasaur);
+
+            expect(kyle.getPokemon("Charmander")).toBe(
+                "You do not have that pokemon"
+            );
         });
     });
 });
