@@ -169,7 +169,7 @@ describe("Pokeball", () => {
             const testPokeball = new Pokeball();
             expect(testPokeball.contains()).toBe("empty...");
         });
-        test("Method throw - if pokeball isn't empty, does not work and informs user pokeball is full", () => {
+        test("Method throw - if pokeball isn't empty, does not work and informs user pokeball is full when argument passed", () => {
             const testPokeball = new Pokeball();
             const bulbasaur = new Bulbasaur("Bulbasaur", 45, 16);
             const rattata = new Rattata("Rattata", 40, 15);
@@ -192,6 +192,12 @@ describe("Pokeball", () => {
             testPokeball.storage = bulbasaur;
 
             expect(testPokeball.throw()).toBe(bulbasaur);
+        });
+        test("Method throw - if invoked with no argument and an empty pokeball, storage is not updated, and the user is informed the ball is empty", () => {
+            const testPokeball = new Pokeball();
+            testPokeball.throw();
+
+            expect(testPokeball.storage).toEqual({});
         });
     });
 });

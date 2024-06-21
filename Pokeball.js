@@ -4,13 +4,27 @@ class Pokeball {
     }
 
     throw(pokemon) {
-        if (this.isEmpty() && arguments[0] === pokemon) {
+        // True if pokemon argument given
+        const isCapturing = arguments[0] !== undefined;
+
+        // If is empty and capturing a pokemon
+        if (this.isEmpty() && isCapturing) {
             this.storage = pokemon;
             console.log(`You caught ${pokemon.name}!`);
         }
-
-        // If the pokeball is full
-        console.log("The pokeball is full");
+        // If is empty and not capturing
+        else if (this.isEmpty() && !isCapturing) {
+            console.log("The pokeball is empty");
+        }
+        // If pokeball is full and is playing a pokemon
+        else if (!this.isEmpty() && !isCapturing) {
+            console.log(`GO ${this.storage.name}!`);
+            return this.storage;
+        }
+        // If pokeball is full and has no pokemon stored
+        else {
+            console.log("The pokeball is full");
+        }
     }
 
     isEmpty() {
